@@ -1,35 +1,62 @@
-const DEFAULT  = 0;
-const POSTVIEW = 1;
+const DEFAULT      = 1;
+const POSTVIEW     = 2;
 
-const AFFILINET    = 0;
-const TRADEDOUBLER = 1;
-const TDPRIVATE    = 2;
-const ZANOX        = 3;
+const O2           = 1;
+const ALICE        = 2;
+const FREIKARTE    = 3;
 
-const O            =  0;
-const PREPAID      =  1;
-const BLUE         =  2;
-const GO           =  3;
-const MYHANDY      =  4;
-const DSL          =  5;
-const SELF         =  6;
-const STUDENT      =  7;
-const START        =  8;
-const TEXT_O     =  9;
-const TEXT_PREPAID = 10;
-const TEXT_BLUE    = 11;
-const TEXT_GO      = 12;
-const TEXT_MYHANDY = 13;
-const TEXT_DSL     = 14;
-const TEXT_SELF    = 15;
-const TEXT_STUDENT = 16;
-const TEXT_START   = 17;
+const AFFILINET    = 1;
+const ZANOX        = 2;
+const TRADEDOUBLER = 3;
+const TDPRIVATE    = 4;
+
+const O            =  1;
+const PREPAID      =  2;
+const BLUE         =  3;
+const GO           =  4;
+const MYHANDY      =  5;
+const DSL          =  6;
+const SELF         =  7;
+const STUDENT      =  8;
+const START        =  9;
+const TEXT_O       = 10;
+const TEXT_PREPAID = 11;
+const TEXT_BLUE    = 12;
+const TEXT_GO      = 13;
+const TEXT_MYHANDY = 14;
+const TEXT_DSL     = 15;
+const TEXT_SELF    = 16;
+const TEXT_STUDENT = 17;
+const TEXT_START   = 18;
+
+const link_base = "http://cct.o2online.de/index.php?redirect=";
 
 
-
-var aa_links = [];
+var aa_links   = [];
 var partner_id = [];
-var vo_nr = [];
+var vo_nr      = [];
+
+// since we started the constant definitions ONE-BASED, we can easily
+// use zero as "undefined" respectively 'Select ...'
+var prodgrp_labels = [    'Select ...',
+                          'Banner o2 o',
+                          'Banner o2 Prepaid',
+                          'Banner o2 Blue',
+                          'Banner o2 go',
+                          'Banner o2 MyHandy',
+                          'Banner o2 DSL',
+                          'Banner o2 Selbstständige',
+                          'Banner o2 Student',
+                          'Banner o2 Startseite',
+                          'Textlink o2 o',
+                          'Textlink o2 Prepaid',
+                          'Textlink o2 Blue',
+                          'Textlink o2 go',
+                          'Textlink o2 MyHandy',
+                          'Textlink o2 DSL',
+                          'Textlink o2 Selbstständige',
+                          'Textlink o2 Student',
+                          'Textlink o2 Startseite'];
 
 aa_links[AFFILINET]    = [];
 aa_links[TRADEDOUBLER] = [];
@@ -103,35 +130,54 @@ pg_id[ZANOX][TEXT_START]   = '&cl=4383336303236323131303&bm=100&bmcl=33837353132
 
 
 
-
 function create_link(src) {
 
-    cur_program = $('#program_selector').val();
-    cur_network = $('#network_selector').val();
-    cur_prodgrp = $('#prodgrp_selector').val();
+    cur_program = $('#program_selector').val().toUpperCase();
+    cur_network = $('#network_selector').val().toUpperCase();
+    cur_prodgrp = $('#prodgrp_selector').val().toUpperCase();
+    deeplink    = $('#link_input').val();
 
-    console.log(cur_program.toUpperCase() + cur_network.toUpperCase() + cur_prodgrp.toUpperCase());
+    program = eval(cur_program);
+    network = eval(cur_network);
+    prodgrp = eval(cur_prodgrp);
+
+    // TODO:
+    partner = DEFAULT;
+
+    console.log(prodgrp);
+
+    link = link_base + aa_links[program][DEFAULT] + deeplink + partner_id[network] + vo_nr[network][partner] + pg_id[network][prodgrp];
+
+//    console.log(cur_program + cur_network + cur_prodgrp);
+    console.log(link);
 }
 
 
 function show_next(src) {
     var cur, id, name, value;
 
+    console.log(src);
+
     id = $(src).attr('id');
     name = id.replace(/select_/, '');
     value = $(src).children().val();
 
-    if(value == 'Select ...') {
+    console.log(name);
+    console.log(value);
+    console.log('..........');
+
+    if(value == 0) {
             hide_all(name);
     } else if(name == 'program') {
-        if(value == 'Freikarte') {
+        if(value == FREIKARTE) {
             name = 'prodgrp';
         } else {
             $('#network').show();
             $('#input_link').hide();
         }
     } else if (name == 'network') {
-        if(value == 'Zanox') {
+        if(value == ZANOX) {
+            console.log('ZANOX');
             $('#input_link').hide();
             $('#prodgrp').show();
         } else {
@@ -147,7 +193,7 @@ function show_next(src) {
 
 
 function hide_all(name) {
-    console.log(name);
+//    console.log(name);
     $('#program').show();
     if(name == 'program') {
         $('#network').hide();
@@ -165,7 +211,7 @@ function create_group_selector(name, data) {
     selector = $('<select id="' + name  + '_selector"></select>');
 
     for(var cid in data) {
-        selector.append($('<option value="' + data[cid] + '">' + data[cid] + '</option>'));
+        selector.append($('<option value="' + cid + '">' + data[cid] + '</option>'));
     }
     $('#select_' + name).append(selector);
 }

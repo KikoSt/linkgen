@@ -9,32 +9,9 @@
 
     "use strict";
 
-    var link_base = "http://cct.o2online.de/index.php?redirect=";
-
     $(document).ready(function () {
         var programs = ['Select ...', 'O2', 'Alice', 'Freikarte'];
         var networks = ['Select ...', 'Affilinet', 'Zanox', 'TradeDoubler', 'TD Private', 'Postview'];
-
-        // product groups only for ZANOX
-        var prodgrps = ['Select ...',
-                        'Banner o2 o',
-                        'Banner o2 Prepaid',
-                        'Banner o2 Blue',
-                        'Banner o2 go',
-                        'Banner o2 MyHandy',
-                        'Banner o2 DSL',
-                        'Banner o2 Selbstständige',
-                        'Banner o2 Student',
-                        'Banner o2 Startseite',
-                        'Textlink o2 o',
-                        'Textlink o2 Prepaid',
-                        'Textlink o2 Blue',
-                        'Textlink o2 go',
-                        'Textlink o2 MyHandy',
-                        'Textlink o2 DSL',
-                        'Textlink o2 Selbstständige',
-                        'Textlink o2 Student',
-                        'Textlink o2 Startseite'];
 
         $('#warning').hide();
 
@@ -45,7 +22,7 @@
 
         create_group_selector('program', programs);
         create_group_selector('network', networks);
-        create_group_selector('prodgrp', prodgrps);
+        create_group_selector('prodgrp', prodgrp_labels);
 
         $('#program').show();
     });
@@ -73,7 +50,7 @@
     <div id="input_link">
         Bitte den Basislink eingeben:
         <br />
-        <input type="text"></input>
+        <input type="text" id="link_input"></input>
         <br />
         <button id="generate_link">Link erzeugen</button>
         </div>
