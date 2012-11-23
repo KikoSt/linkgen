@@ -1,0 +1,60 @@
+body {
+    font-family: verdana;
+    font-size: .75em;
+}
+
+#warning {
+    font-family: verdana;
+}
+
+#program {
+    display: none;
+    padding-bottom: 25px;
+}
+
+#select_program {
+    margin: 6px 0px 0px 5px;
+}
+
+#network {
+    display: none;
+    padding-bottom: 25px;
+}
+
+#select_network {
+    margin: 6px 0px 0px 5px;
+}
+
+#prodgrp {
+    display: none;
+    padding-bottom: 25px;
+}
+
+#select_prodgrp {
+    margin: 6px 0px 0px 5px;
+}
+
+#input_link {
+    display: none;
+}
+
+#input_link input {
+    margin: 6px 0px 0px 5px;
+}
+
+#output {
+    display: none;
+}
+
+#generate_link {
+    margin: 6px 0px 0px 5px;
+}
+
+
+
+
+
+select  {
+    font-family: verdana;
+    font-size: .85em;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>eXplido Link Generator</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <script src="js/jquery-1.8.1.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script>
+
+    "use strict";
+
+    var link_base = "http://cct.o2online.de/index.php?redirect=";
+
+    $(document).ready(function () {
+        var programs = ['Select ...', 'O2', 'Alice', 'Freikarte'];
+        var networks = ['Select ...', 'Affilinet', 'Zanox', 'TradeDoubler', 'TD Private', 'Postview'];
+
+        // product groups only for ZANOX
+        var prodgrps = ['Select ...',
+                        'Banner o2 o',
+                        'Banner o2 Prepaid',
+                        'Banner o2 Blue',
+                        'Banner o2 go',
+                        'Banner o2 MyHandy',
+                        'Banner o2 DSL',
+                        'Banner o2 Selbstständige',
+                        'Banner o2 Student',
+                        'Banner o2 Startseite',
+                        'Textlink o2 o',
+                        'Textlink o2 Prepaid',
+                        'Textlink o2 Blue',
+                        'Textlink o2 go',
+                        'Textlink o2 MyHandy',
+                        'Textlink o2 DSL',
+                        'Textlink o2 Selbstständige',
+                        'Textlink o2 Student',
+                        'Textlink o2 Startseite'];
+
+        $('#warning').hide();
+
+        $('#select_program').bind('change', function(event) { show_next(this); });
+        $('#select_network').bind('change', function(event) { show_next(this); });
+        $('#select_prodgrp').bind('change', function(event) { show_next(this); });
+        $('#generate_link').bind('click', function(event) { create_link(this); });
+
+        create_group_selector('program', programs);
+        create_group_selector('network', networks);
+        create_group_selector('prodgrp', prodgrps);
+
+        $('#program').show();
+    });
+
+
+
+
+    </script>
+</head>
+<body>
+    <div id="warning">This tool requires activated JavaScript. Please make sure you have JavaScript activated before reload the page.</div>
+    <div id="program">
+        Bitte Programm auswählen:
+        <div id="select_program"></div>
+    </div>
+    <div id="network">
+        Bitte Netzwerk auswählen:
+        <div id="select_network"></div>
+    </div>
+    <div id="prodgrp">
+        Bitte Produktgruppe auswählen:
+        <div id="select_prodgrp"></div>
+    </div>
+
+    <div id="input_link">
+        Bitte den Basislink eingeben:
+        <br />
+        <input type="text"></input>
+        <br />
+        <button id="generate_link">Link erzeugen</button>
+        </div>
+    <div id="output">STRG-C zum Kopieren des Links in die Zwischenablage</div>
+</body>
