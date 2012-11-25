@@ -63,15 +63,15 @@ aa_links[TRADEDOUBLER] = [];
 aa_links[TDPRIVATE]    = [];
 aa_links[ZANOX]        = [];
 
-aa_links[AFFILINET][DEFAULT]     = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
-aa_links[TRADEDOUBLER][DEFAULT]  = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
-aa_links[TDPRIVATE][DEFAULT]     = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
-aa_links[ZANOX][DEFAULT]         = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
+aa_links[AFFILINET][DEFAULT]     = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[TRADEDOUBLER][DEFAULT]  = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[TDPRIVATE][DEFAULT]     = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[ZANOX][DEFAULT]         = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
 
-aa_links[AFFILINET][POSTVIEW]    = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
-aa_links[TRADEDOUBLER][POSTVIEW] = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
-aa_links[TDPRIVATE][POSTVIEW]    = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
-aa_links[ZANOX][POSTVIEW]        = 'http:/www.actionallocator.com/cset.php?ex-id=1&….&url=';
+aa_links[AFFILINET][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[TRADEDOUBLER][POSTVIEW] = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[TDPRIVATE][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[ZANOX][POSTVIEW]        = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
 
 
 partner_id[ZANOX]        = 'ppzap';
@@ -94,6 +94,17 @@ vo_nr[AFFILINET][POSTVIEW]    = 'WB.60.1003';
 vo_nr[TRADEDOUBLER][POSTVIEW] = 'WB.60.1003';
 vo_nr[TDPRIVATE][POSTVIEW]    = 'WB.60.1003';
 vo_nr[ZANOX][POSTVIEW]        = 'WB.60.1003';
+
+
+
+type = [];
+
+type[ZANOX]        = 'o2_AF';
+type[AFFILINET]    = 'o2_AF';
+type[TRADEDOUBLER] = 'o2_AF';
+type[TDPRIVATE]    = 'o2_AF';
+
+
 
 pg_id = [];
 
@@ -144,11 +155,16 @@ function create_link(src) {
     // TODO:
     partner = DEFAULT;
 
-    console.log(prodgrp);
+    link = link_base;
 
-    link = link_base + aa_links[program][DEFAULT] + deeplink + partner_id[network] + vo_nr[network][partner] + pg_id[network][prodgrp];
+    link += encodeURIComponent(aa_links[program][DEFAULT]);
+    link += encodeURIComponent(encodeURIComponent(deeplink));
+    link += encodeURIComponent(encodeURIComponent('&partnerId=' + partner_id[network]));
+    link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[network][partner]));
+    link += encodeURIComponent(encodeURIComponent('&type=' + type[network]));
 
-//    console.log(cur_program + cur_network + cur_prodgrp);
+    link += pg_id[network][prodgrp];
+
     console.log(link);
 }
 
