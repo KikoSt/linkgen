@@ -4,6 +4,7 @@
     <title>eXplido Link Generator</title>
     <link rel="stylesheet" href="css/global.css" />
     <script src="js/jquery-1.8.1.min.js"></script>
+    <script src="js/definitions.js"></script>
     <script src="js/functions.js"></script>
     <script>
 
@@ -33,6 +34,7 @@
     </script>
 </head>
 <body>
+    <h1>explido linkGenerator</h1>
     <div id="warning">This tool requires activated JavaScript. Please make sure you have JavaScript activated before reload the page.</div>
     <div id="program">
         Bitte Programm auswählen:
@@ -41,6 +43,7 @@
     <div id="network">
         Bitte Netzwerk auswählen:
         <div id="select_network"></div>
+        <div id="select_postview"><input type="checkbox" id="postview_selector"> Postview</div>
     </div>
     <div id="prodgrp">
         Bitte Produktgruppe auswählen:
@@ -50,9 +53,15 @@
     <div id="input_link">
         Bitte den Basislink eingeben:
         <br />
-        <input type="text" id="link_input"></input>
+        <input type="text" id="link_input" />
         <br />
         <button id="generate_link">Link erzeugen</button>
-        </div>
-    <div id="output">STRG-C zum Kopieren des Links in die Zwischenablage</div>
+    </div>
+    <div id="output_link">
+        <h2>Ergebnis:</h2>
+        <textarea id="link_output"></textarea>
+        <p>
+        STRG-C zum Kopieren des Links in die Zwischenablage
+        </p>
+    </div>
 </body>

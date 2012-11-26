@@ -1,195 +1,76 @@
-const DEFAULT      = 1;
-const POSTVIEW     = 2;
+/*
+ * function create_link
+ *
+ * create the complete correctly encoded link
+ *
+ */
+function create_link() {
 
-const O2           = 1;
-const ALICE        = 2;
-const FREIKARTE    = 3;
+    // get the program, the network and the product group as
+    // UPPERCASE keywords
+    cur_program  = $('#program_selector').val().toUpperCase();
+    cur_network  = $('#network_selector').val().toUpperCase();
+    cur_prodgrp  = $('#prodgrp_selector').val().toUpperCase();
+    // this can only be DEFAULT (not postview) or POSTVIEW
+    // depending on the constant definition, this should  0 (DEFAULT)
+    // respectively 1
+    is_postview = $('#postview_selector').is(':checked') == true ? POSTVIEW : DEFAULT;
 
-const AFFILINET    = 1;
-const ZANOX        = 2;
-const TRADEDOUBLER = 3;
-const TDPRIVATE    = 4;
+    deeplink     = $('#link_input').val();
 
-const O            =  1;
-const PREPAID      =  2;
-const BLUE         =  3;
-const GO           =  4;
-const MYHANDY      =  5;
-const DSL          =  6;
-const SELF         =  7;
-const STUDENT      =  8;
-const START        =  9;
-const TEXT_O       = 10;
-const TEXT_PREPAID = 11;
-const TEXT_BLUE    = 12;
-const TEXT_GO      = 13;
-const TEXT_MYHANDY = 14;
-const TEXT_DSL     = 15;
-const TEXT_SELF    = 16;
-const TEXT_STUDENT = 17;
-const TEXT_START   = 18;
-
-const link_base = "http://cct.o2online.de/index.php?redirect=";
+    add_prodgrp = $('#prodgrp').css('display') == 'none' ? false : true;
+    add_network = $('#network').css('display') == 'none' ? false : true;
 
 
-var aa_links   = [];
-var partner_id = [];
-var vo_nr      = [];
+    console.log(add_network + ' / ' + add_prodgrp);
 
-// since we started the constant definitions ONE-BASED, we can easily
-// use zero as "undefined" respectively 'Select ...'
-var prodgrp_labels = [    'Select ...',
-                          'Banner o2 o',
-                          'Banner o2 Prepaid',
-                          'Banner o2 Blue',
-                          'Banner o2 go',
-                          'Banner o2 MyHandy',
-                          'Banner o2 DSL',
-                          'Banner o2 Selbstständige',
-                          'Banner o2 Student',
-                          'Banner o2 Startseite',
-                          'Textlink o2 o',
-                          'Textlink o2 Prepaid',
-                          'Textlink o2 Blue',
-                          'Textlink o2 go',
-                          'Textlink o2 MyHandy',
-                          'Textlink o2 DSL',
-                          'Textlink o2 Selbstständige',
-                          'Textlink o2 Student',
-                          'Textlink o2 Startseite'];
-
-aa_links[AFFILINET]    = [];
-aa_links[TRADEDOUBLER] = [];
-aa_links[TDPRIVATE]    = [];
-aa_links[ZANOX]        = [];
-
-aa_links[AFFILINET][DEFAULT]     = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TRADEDOUBLER][DEFAULT]  = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TDPRIVATE][DEFAULT]     = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[ZANOX][DEFAULT]         = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-
-aa_links[AFFILINET][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TRADEDOUBLER][POSTVIEW] = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TDPRIVATE][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[ZANOX][POSTVIEW]        = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-
-
-partner_id[ZANOX]        = 'ppzap';
-partner_id[AFFILINET]    = 'ppaff';
-partner_id[TRADEDOUBLER] = 'pptrd';
-partner_id[TDPRIVATE]    = 'pptrd';
-
-
-vo_nr[AFFILINET]    = [];
-vo_nr[TRADEDOUBLER] = [];
-vo_nr[TDPRIVATE]    = [];
-vo_nr[ZANOX]        = [];
-
-vo_nr[AFFILINET][DEFAULT]     = 'WB.07.1000';
-vo_nr[TRADEDOUBLER][DEFAULT]  = 'WB.08.1000';
-vo_nr[TDPRIVATE][DEFAULT]     = 'WB.08.1004';
-vo_nr[ZANOX][DEFAULT]         = 'IV.80.1001';
-
-vo_nr[AFFILINET][POSTVIEW]    = 'WB.60.1003';
-vo_nr[TRADEDOUBLER][POSTVIEW] = 'WB.60.1003';
-vo_nr[TDPRIVATE][POSTVIEW]    = 'WB.60.1003';
-vo_nr[ZANOX][POSTVIEW]        = 'WB.60.1003';
-
-
-
-type = [];
-
-type[ZANOX]        = 'o2_AF';
-type[AFFILINET]    = 'o2_AF';
-type[TRADEDOUBLER] = 'o2_AF';
-type[TDPRIVATE]    = 'o2_AF';
-
-
-
-pg_id = [];
-
-pg_id[AFFILINET]    = [];
-pg_id[TRADEDOUBLER] = [];
-pg_id[TDPRIVATE]    = [];
-pg_id[ZANOX]        = [];
-
-pg_id[AFFILINET][DEFAULT]    = [];
-pg_id[TRADEDOUBLER][DEFAULT] = [];
-pg_id[TDPRIVATE][DEFAULT]    = [];
-pg_id[ZANOX][DEFAULT]    = null;
-
-
-pg_id[ZANOX][O]            = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=101&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][PREPAID]      = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=111&ag=117&crid=101&subid=Keyword1';
-pg_id[ZANOX][BLUE]         = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=151&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][GO]           = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=175&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][MYHANDY]      = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=200&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][DSL]          = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=262&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][SELF]         = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=280&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][STUDENT]      = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=217&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][START]        = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=240&ag=119&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_O]       = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=101&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_PREPAID] = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=111&ag=117&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_BLUE]    = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=151&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_GO]      = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=175&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_MYHANDY] = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=200&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_DSL]     = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=262&ag=120&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_SELF]    = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=280&ag=126&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_STUDENT] = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=217&ag=101&crid=101&subid=Keyword1';
-pg_id[ZANOX][TEXT_START]   = '&cl=4383336303236323131303&bm=100&bmcl=3383735313236323131303&cp=240&ag=119&crid=101&subid=Keyword1';
-
-
-
-
-function create_link(src) {
-
-    cur_program = $('#program_selector').val().toUpperCase();
-    cur_network = $('#network_selector').val().toUpperCase();
-    cur_prodgrp = $('#prodgrp_selector').val().toUpperCase();
-    deeplink    = $('#link_input').val();
-
-    program = eval(cur_program);
-    network = eval(cur_network);
-    prodgrp = eval(cur_prodgrp);
+    // convert string into constant
+    program = JSON.parse(cur_program);
+    network = JSON.parse(cur_network);
+    prodgrp = JSON.parse(cur_prodgrp);
 
     // TODO:
     partner = DEFAULT;
 
     link = link_base;
 
-    link += encodeURIComponent(aa_links[program][DEFAULT]);
+    link += encodeURIComponent(aa_links[program][is_postview]);
     link += encodeURIComponent(encodeURIComponent(deeplink));
     link += encodeURIComponent(encodeURIComponent('&partnerId=' + partner_id[network]));
-    link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[network][partner]));
+    link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[network][is_postview]));
     link += encodeURIComponent(encodeURIComponent('&type=' + type[network]));
 
-    link += pg_id[network][prodgrp];
+    if(add_prodgrp) {
+        link += pg_id[network][prodgrp];
+    }
 
     console.log(link);
+
+    $('#link_output').val(link);
+    $('#output_link').show();
+    $('#link_output').select();
 }
 
 
 function show_next(src) {
     var cur, id, name, value;
 
-    console.log(src);
-
     id = $(src).attr('id');
     name = id.replace(/select_/, '');
     value = $(src).children().val();
 
-    console.log(name);
-    console.log(value);
-    console.log('..........');
+    reset_all(name);
 
-    if(value == 0) {
-            hide_all(name);
+    if(value == DEFAULT) {
+        hide_all(name);
     } else if(name == 'program') {
+        $('#prodgrp').hide();
+        $('#input_link').hide();
         if(value == FREIKARTE) {
+            $('#network').hide();
             name = 'prodgrp';
         } else {
             $('#network').show();
-            $('#input_link').hide();
         }
     } else if (name == 'network') {
         if(value == ZANOX) {
@@ -207,18 +88,38 @@ function show_next(src) {
 }
 
 
-
+/*
+ * function hide_all
+ *
+ * Hides all input elements except the program
+ * selector
+ * Currently, there are the following input elements:
+ * - program  selector
+ * - network  selector
+ * - prodgrp  selector
+ * - baselink input
+ *
+ * While the program selector must be visible all
+ * the time, the other's must be hidden/disabled when
+ * a previous input field is reset to it's default
+ * value ('Select ...', currently).
+ *
+ * @param name  current "section" name ("product", "network", "prodgrp")
+ *
+ */
 function hide_all(name) {
-//    console.log(name);
+    reset_all(name);
     $('#program').show();
+
     if(name == 'program') {
+        console.log('Hiding network');
         $('#network').hide();
-        $('#prodgrp').hide();
     }
-    if(name == 'network') {
+    if(name == 'program' || name == 'network') {
         $('#prodgrp').hide();
     }
     $('#input_link').hide();
+    $('#output_link').hide();
 }
 
 
@@ -230,5 +131,22 @@ function create_group_selector(name, data) {
         selector.append($('<option value="' + cid + '">' + data[cid] + '</option>'));
     }
     $('#select_' + name).append(selector);
+}
+
+function reset_all(name) {
+//     $('#program_selector').children('[value=0]').attr('selected', '"selected"');
+
+    if(name == 'program') {
+    }
+    console.log(name);
+    if(name == 'program') {
+        $('#network_selector').children('[value=0]').attr('selected', '"selected"');
+    }
+    if(name == 'program' || name == 'network') {
+        $('#prodgrp_selector').children('[value=0]').attr('selected', '"selected"');
+        $('#prodgrp').hide();
+    }
+    $('#input_link').hide();
+    $('#link_output').val('');
 }
 
