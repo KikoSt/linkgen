@@ -150,3 +150,46 @@ function reset_all(name) {
     $('#link_output').val('');
 }
 
+
+
+
+
+
+// we need to map an entire path ...
+//
+// PROGRAM
+//    |
+//    v
+// NETWORK
+//    |
+//    v
+// PRODGRP
+//    |
+//    v
+//  LINK
+//
+//
+//                 PROGRAM
+//      [O2]       [ALICE]       [FREIKARTE]
+//       |            |               |
+//       \            /               |
+//        \          /                |
+//           NETWORK                  |
+//     [AN] [ZX] [TD] [TDP]           |
+//              |                    /
+//          POSTVIEW                /
+//        [true] [false]           /
+//              |                 /
+//              |                /
+//              |               /
+//            LINK ------------
+//              |
+//
+//
+// apppath[PROGRAM][NETWORK][POSTVIEW][PRODGRP]
+//
+// every element would need a value and a "pointer"
+// value = name
+// pointer = next step
+//
+//
