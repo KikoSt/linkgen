@@ -152,6 +152,28 @@ function reset_all(name) {
 
 
 
+function handle_file_select(event) {
+    var files = event.target.files; // FileList object
+
+    var reader = new FileReader;
+
+    reader.onload = (function(the_file) {
+        return function(e) {
+            alert(e);
+        }
+    });
+
+    // files is a FileList of File objects!
+    var output = [];
+
+    for (var i=0, f; f = files[i]; i += 1) {
+        output.push(escape(f.name));
+
+        var text = reader.readAsText(f);
+    }
+
+    $('output').val(output);
+}
 
 
 

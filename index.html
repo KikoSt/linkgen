@@ -20,6 +20,7 @@
         $('#select_network').bind('change', function(event) { show_next(this); });
         $('#select_prodgrp').bind('change', function(event) { show_next(this); });
         $('#generate_link').bind('click', function(event) { create_link(this); });
+        $('#file_input').bind('change', function(event) { handle_file_select(event); });
 
         create_group_selector('program', programs);
         create_group_selector('network', networks);
@@ -40,28 +41,35 @@
         Bitte Programm auswählen:
         <div id="select_program"></div>
     </div>
-    <div id="network">
-        Bitte Netzwerk auswählen:
-        <div id="select_network"></div>
-        <div id="select_postview"><input type="checkbox" id="postview_selector"> Postview</div>
-    </div>
-    <div id="prodgrp">
-        Bitte Produktgruppe auswählen:
-        <div id="select_prodgrp"></div>
-    </div>
+    <div id="manual">
+        <div id="network">
+            Bitte Netzwerk auswählen:
+            <div id="select_network"></div>
+            <div id="select_postview"><input type="checkbox" id="postview_selector"> Postview</div>
+        </div>
+        <div id="prodgrp">
+            Bitte Produktgruppe auswählen:
+            <div id="select_prodgrp"></div>
+        </div>
 
-    <div id="input_link">
-        Bitte den Basislink eingeben:
-        <br />
-        <input type="text" id="link_input" />
-        <br />
-        <button id="generate_link">Link erzeugen</button>
+        <div id="input_link">
+            Bitte den Basislink eingeben:
+            <br />
+            <input type="text" id="link_input" />
+            <br />
+            <button id="generate_link">Link erzeugen</button>
+        </div>
+        <div id="output_link">
+            <h2>Ergebnis:</h2>
+            <textarea id="link_output"></textarea>
+            <p>
+            STRG-C zum Kopieren des Links in die Zwischenablage
+            </p>
+        </div>
     </div>
-    <div id="output_link">
-        <h2>Ergebnis:</h2>
-        <textarea id="link_output"></textarea>
-        <p>
-        STRG-C zum Kopieren des Links in die Zwischenablage
-        </p>
-    </div>
+    <div id="batch">
+        <div id="input_file">
+            <input type="file" id="file_input" name="files[]" multiple />
+            <output id="list"></output>
+        </div>
 </body>
