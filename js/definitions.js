@@ -31,7 +31,6 @@ const TEXT_START   = 18;
 
 const link_base = "http://cct.o2online.de/index.php?redirect=";
 
-
 var aa_links   = [];
 var partner_id = [];
 var vo_nr      = [];
@@ -63,15 +62,16 @@ aa_links[TRADEDOUBLER] = [];
 aa_links[TDPRIVATE]    = [];
 aa_links[ZANOX]        = [];
 
-aa_links[AFFILINET][DEFAULT]     = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TRADEDOUBLER][DEFAULT]  = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TDPRIVATE][DEFAULT]     = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[ZANOX][DEFAULT]         = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[AFFILINET][DEFAULT]     = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2752&ex-url=';
+aa_links[TRADEDOUBLER][DEFAULT]  = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2754&ex-url=';
+aa_links[TDPRIVATE][DEFAULT]     = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2766&ex-url=';
+aa_links[ZANOX][DEFAULT]         = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2753&ex-url=';
 
-aa_links[AFFILINET][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TRADEDOUBLER][POSTVIEW] = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[TDPRIVATE][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
-aa_links[ZANOX][POSTVIEW]        = 'http://www.actionallocator.com/cset.php?exid=1&….&url=';
+aa_links[AFFILINET][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2763&ex-url=';
+aa_links[TRADEDOUBLER][POSTVIEW] = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2765&ex-url=';
+aa_links[TDPRIVATE][POSTVIEW]    = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2768&ex-url=';
+aa_links[ZANOX][POSTVIEW]        = 'http://www.actionallocator.com/cset.php?ex-aid=141&ex-cid=2770&ex-url=';
+
 
 
 partner_id[ZANOX]        = 'ppzap';

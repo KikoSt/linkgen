@@ -1,3 +1,5 @@
+const LNBR = "\n";
+
 /*
  * function create_link
  *
@@ -5,6 +7,15 @@
  *
  */
 function create_link() {
+    "use strict";
+
+    var cur_program, cur_network, cur_prodgrp;
+    var program, network, prodgrp;
+    var is_postview;
+    var deeplink;
+    var add_network, add_prodgrp;
+    var partner, link;
+    var log;
 
     // get the program, the network and the product group as
     // UPPERCASE keywords
@@ -17,12 +28,13 @@ function create_link() {
     is_postview = $('#postview_selector').is(':checked') == true ? POSTVIEW : DEFAULT;
 
     deeplink     = $('#link_input').val();
+    if(deeplink.substr(0, 7) != 'http://') {
+        deeplink = 'http://' + deeplink;
+    }
 
     add_prodgrp = $('#prodgrp').css('display') == 'none' ? false : true;
     add_network = $('#network').css('display') == 'none' ? false : true;
 
-
-    console.log(add_network + ' / ' + add_prodgrp);
 
     // convert string into constant
     program = JSON.parse(cur_program);
@@ -36,15 +48,41 @@ function create_link() {
 
     link += encodeURIComponent(aa_links[program][is_postview]);
     link += encodeURIComponent(encodeURIComponent(deeplink));
-    link += encodeURIComponent(encodeURIComponent('&partnerId=' + partner_id[network]));
-    link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[network][is_postview]));
-    link += encodeURIComponent(encodeURIComponent('&type=' + type[network]));
+    if(add_network) {
+        link += encodeURIComponent(encodeURIComponent('&partnerId=' + partner_id[network]));
+        link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[network][is_postview]));
+        link += encodeURIComponent(encodeURIComponent('&type=' + type[network]));
+    }
 
     if(add_prodgrp) {
         link += pg_id[network][prodgrp];
     }
 
-    console.log(link);
+
+
+    // prepare log
+    log = 'Program: ' + cur_program;
+    log += LNBR;
+    log += 'Network: ' + cur_network;
+    log += LNBR;
+    log += 'Prodgrp: ' + cur_prodgrp;
+    log += LNBR;
+    log += LNBR;
+    log += 'is postview? ' + is_postview;
+    log += LNBR;
+    log += LNBR;
+    log += 'Add network? ' + add_network;
+    log += LNBR;
+    log += 'Add prodgrp? ' + add_prodgrp;
+    log += LNBR;
+    log += LNBR;
+    log += 'deeplink: ' + deeplink;
+    log += LNBR;
+    log += 'generated url: ' + link;
+
+    console.log(log);
+
+
 
     $('#link_output').val(link);
     $('#output_link').show();

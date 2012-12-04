@@ -1,0 +1,3 @@
+- add autocompletion if protocol (http://) is missing in deeplink
+- add html5 url checking for deeplink input field (NOT really reliable, this
+is only intended as support)

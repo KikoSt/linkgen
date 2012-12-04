@@ -11,7 +11,7 @@
     "use strict";
 
     $(document).ready(function () {
-        var programs = ['Select ...', 'O2', 'Alice', 'Freikarte'];
+        var programs = ['Select ...', 'O2', 'Alice'];
         var networks = ['Select ...', 'Affilinet', 'Zanox', 'TradeDoubler', 'TD Private', 'Postview'];
 
         $('#warning').hide();
@@ -55,7 +55,7 @@
         <div id="input_link">
             Bitte den Basislink eingeben:
             <br />
-            <input type="text" id="link_input" />
+            <input type="url" id="link_input" />
             <br />
             <button id="generate_link">Link erzeugen</button>
         </div>
@@ -67,9 +67,11 @@
             </p>
         </div>
     </div>
+    <!--
     <div id="batch">
         <div id="input_file">
             <input type="file" id="file_input" name="files[]" multiple />
             <output id="list"></output>
         </div>
+    -->
 </body>
