@@ -88,3 +88,34 @@ select  {
     font-family: verdana;
     font-size: .85em;
 }
+
+#changelog {
+    padding-top: 100px;
+    font-size: .8em;
+    font-style: italic;
+    line-height: 1.5em;
+    color: #aaa;
+}
+
+#changelog > h1 {
+    cursor: pointer;
+}
+
+ul {
+    font-size: .9em;
+    list-style-type: none;
+    list-style-position: outside;
+}
+
+li:before {
+    content: '- '
+}
+
+li.new {
+    color: #f99;
+}
+
+.annotation {
+    font-size: .5em;
+    padding-left: 25px;
+}

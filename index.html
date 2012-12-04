@@ -12,21 +12,39 @@
 
     $(document).ready(function () {
         var programs = ['Select ...', 'O2', 'Alice'];
-        var networks = ['Select ...', 'Affilinet', 'Zanox', 'TradeDoubler', 'TD Private', 'Postview'];
+        var networks = ['Select ...', 'Affilinet', 'Zanox', 'TradeDoubler', 'TD Private'];
 
         $('#warning').hide();
 
         $('#select_program').bind('change', function(event) { show_next(this); });
         $('#select_network').bind('change', function(event) { show_next(this); });
         $('#select_prodgrp').bind('change', function(event) { show_next(this); });
-        $('#generate_link').bind('click', function(event) { create_link(this); });
+        $('#generate_link').bind('click', function(event) {
+            var link = create_link(this);
+            show_link(link);
+        });
         $('#file_input').bind('change', function(event) { handle_file_select(event); });
+        $('#report_error').bind('click', function(event) { report_error(event); });
+
+        $('#changelog').bind('click', function(event) {
+            if('none' === $('#changelog').children("#content").css('display')) {
+                $('#changelog').children("#content").show();
+                $('#changelog').children('h1').html('changelog<span class="annotation"> - click to hide</span>');
+            } else {
+                $('#changelog').children("#content").hide();
+                $('#changelog').children('h1').html('changelog<span class="annotation"> - click to show</span>');
+            }
+        });
 
         create_group_selector('program', programs);
         create_group_selector('network', networks);
         create_group_selector('prodgrp', prodgrp_labels);
 
         $('#program').show();
+        $('#network').show();
+
+        $('#changelog').children("#content").hide();
+
     });
 
 
@@ -37,11 +55,13 @@
 <body>
     <h1>explido linkGenerator</h1>
     <div id="warning">This tool requires activated JavaScript. Please make sure you have JavaScript activated before reload the page.</div>
-    <div id="program">
-        Bitte Programm auswählen:
-        <div id="select_program"></div>
-    </div>
     <div id="manual">
+        <div id="program">
+<!--        Bitte Programm auswählen:
+            <div id="select_program"></div> -->
+
+            Programm: <span id="program_selector" value="O2">O2</span>
+        </div>
         <div id="network">
             Bitte Netzwerk auswählen:
             <div id="select_network"></div>
@@ -65,13 +85,32 @@
             <p>
             STRG-C zum Kopieren des Links in die Zwischenablage
             </p>
+            <p>
+            <button id="report_error">Fehlerhaften Link melden</button>
+            </p>
         </div>
     </div>
-    <!--
+            <!--
     <div id="batch">
         <div id="input_file">
             <input type="file" id="file_input" name="files[]" multiple />
             <output id="list"></output>
         </div>
-    -->
+    </div>
+            -->
+    <div id="changelog">
+
+        <h1>changelog<span class="annotation"> - click to show</span></h1>
+        <div id="content">
+            <h2>2012-12-04</h2>
+            <ul>
+                <li class="new">change '&' to '?' with partnerId (IntelliAd parameter)</li>
+                <li class="new">remove POSTVIEW from network list</li>
+                <li class="new">reinstate inclusion of IntelliAd section ;)</li>
+                <li>add autocompletion if protocol (http://) is missing in deeplink</li>
+                <li>make O2 the default program, no further selection required (or possible, as of now ;))</li>
+                <li>minor style sheet corrections and changes</li>
+            </ul>
+       </div>
+    </div>
 </body>

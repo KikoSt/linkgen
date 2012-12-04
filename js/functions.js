@@ -1,5 +1,89 @@
 const LNBR = "\n";
 
+function get_cur_program() {
+    cur_program  = $('#program_selector').val().toUpperCase();
+    cur_program  = O2; // $('#program_selector').attr('value').toUpperCase();
+    return cur_program;
+}
+
+function get_cur_network() {
+    cur_network  = $('#network_selector').val().toUpperCase();
+    return cur_network;
+}
+
+function get_cur_prodgrp() {
+    cur_prodgrp  = $('#prodgrp_selector').val().toUpperCase();
+    return cur_prodgrp;
+}
+
+function get_is_postview() {
+    var is_postview = $('#postview_selector').is(':checked') == true ? POSTVIEW : DEFAULT;
+    return is_postview;
+}
+
+function get_deeplink() {
+    var deeplink = $('#link_input').val();
+    if(deeplink.substr(0, 7) != 'http://') {
+        deeplink = 'http://' + deeplink;
+    }
+    return deeplink;
+}
+
+function get_add_prodgrp() {
+    add_prodgrp = $('#prodgrp').css('display') == 'none' ? false : true;
+    return add_prodgrp;
+}
+
+
+
+function get_add_network() {
+    add_network = $('#network').css('display') == 'none' ? false : true;
+    return add_network;
+}
+
+
+function get_link_data() {
+
+    var data = [];
+
+    data['cur_program'] = get_cur_program();
+    data['cur_network'] = get_cur_network();
+    data['cur_prodgrp'] = get_cur_prodgrp();
+
+    data['is_postview'] = get_is_postview();
+    data['deeplink'] = get_deeplink();
+
+    data['add_prodgrp'] = get_add_prodgrp();
+    data['add_network'] = get_add_network();
+
+    data['program'] = JSON.parse(cur_program);
+    data['network'] = JSON.parse(cur_network);
+    data['prodgrp'] = JSON.parse(cur_prodgrp);
+
+    console.log(data['prodgrp']);
+
+    data['partner'] = DEFAULT;
+
+    return data;
+}
+
+
+
+function get_link(data) {
+    var link = link_base;
+    link += encodeURIComponent(aa_links[data['program']][data['is_postview']]);
+    link += encodeURIComponent(encodeURIComponent(data['deeplink']));
+
+    if(add_network) {
+        link += encodeURIComponent(encodeURIComponent('?partnerId=' + partner_id[data['network']]));
+        link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[data['network']][data['is_postview']]));
+        link += encodeURIComponent(encodeURIComponent('&type=' + type[data['network']]));
+    }
+
+    link += pg_id[data['network']][data['prodgrp']];
+    return(link);
+}
+
 /*
  * function create_link
  *
@@ -9,84 +93,66 @@ const LNBR = "\n";
 function create_link() {
     "use strict";
 
-    var cur_program, cur_network, cur_prodgrp;
-    var program, network, prodgrp;
-    var is_postview;
-    var deeplink;
-    var add_network, add_prodgrp;
-    var partner, link;
-    var log;
+    var data = get_link_data();
+    var link = get_link(data);
 
-    // get the program, the network and the product group as
-    // UPPERCASE keywords
-    cur_program  = $('#program_selector').val().toUpperCase();
-    cur_network  = $('#network_selector').val().toUpperCase();
-    cur_prodgrp  = $('#prodgrp_selector').val().toUpperCase();
-    // this can only be DEFAULT (not postview) or POSTVIEW
-    // depending on the constant definition, this should  0 (DEFAULT)
-    // respectively 1
-    is_postview = $('#postview_selector').is(':checked') == true ? POSTVIEW : DEFAULT;
+    // add the link itself to data
+    // FOR CONVENIENCE ONLY!
+    data['link'] = link;
 
-    deeplink     = $('#link_input').val();
-    if(deeplink.substr(0, 7) != 'http://') {
-        deeplink = 'http://' + deeplink;
-    }
-
-    add_prodgrp = $('#prodgrp').css('display') == 'none' ? false : true;
-    add_network = $('#network').css('display') == 'none' ? false : true;
-
-
-    // convert string into constant
-    program = JSON.parse(cur_program);
-    network = JSON.parse(cur_network);
-    prodgrp = JSON.parse(cur_prodgrp);
-
-    // TODO:
-    partner = DEFAULT;
-
-    link = link_base;
-
-    link += encodeURIComponent(aa_links[program][is_postview]);
-    link += encodeURIComponent(encodeURIComponent(deeplink));
-    if(add_network) {
-        link += encodeURIComponent(encodeURIComponent('&partnerId=' + partner_id[network]));
-        link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[network][is_postview]));
-        link += encodeURIComponent(encodeURIComponent('&type=' + type[network]));
-    }
-
-    if(add_prodgrp) {
-        link += pg_id[network][prodgrp];
-    }
-
-
-
-    // prepare log
-    log = 'Program: ' + cur_program;
-    log += LNBR;
-    log += 'Network: ' + cur_network;
-    log += LNBR;
-    log += 'Prodgrp: ' + cur_prodgrp;
-    log += LNBR;
-    log += LNBR;
-    log += 'is postview? ' + is_postview;
-    log += LNBR;
-    log += LNBR;
-    log += 'Add network? ' + add_network;
-    log += LNBR;
-    log += 'Add prodgrp? ' + add_prodgrp;
-    log += LNBR;
-    log += LNBR;
-    log += 'deeplink: ' + deeplink;
-    log += LNBR;
-    log += 'generated url: ' + link;
+    var log = get_log_text(data);
 
     console.log(log);
 
+    // TODO: write log to log file!
+    return(link);
+}
 
 
+
+function show_link(link) {
     $('#link_output').val(link);
     $('#output_link').show();
     $('#link_output').select();
+}
+
+
+
+function get_log_text(data) {
+    var logM
+    // prepare log
+    log = 'Program: ' + data['cur_program'];
+    log += LNBR;
+    log += 'Network: ' + data['cur_network'];
+    log += LNBR;
+    log += 'Prodgrp: ' + data['cur_prodgrp'];
+    log += LNBR;
+    log += LNBR;
+    log += 'is postview? ' + data['is_postview'];
+    log += LNBR;
+    log += 'Add network? ' + data['add_network'];
+    log += LNBR;
+    log += LNBR;
+    log += 'deeplink: ' + data['deeplink'];
+    log += LNBR;
+
+    return log;
+}
+
+
+
+function report_error() {
+    var data = get_link_data();
+    var log = get_log_text(data);
+
+    $.ajax({
+        type: "POST",
+        url: "lib/report.ajax.php",
+        context: document.body,
+        data: data
+    }).done(function() {
+        console.log('Mail sent');
+    });
 }
 
 
@@ -161,6 +227,7 @@ function hide_all(name) {
 }
 
 
+
 function create_group_selector(name, data) {
     var selector;
     selector = $('<select id="' + name  + '_selector"></select>');
@@ -170,6 +237,8 @@ function create_group_selector(name, data) {
     }
     $('#select_' + name).append(selector);
 }
+
+
 
 function reset_all(name) {
 //     $('#program_selector').children('[value=0]').attr('selected', '"selected"');

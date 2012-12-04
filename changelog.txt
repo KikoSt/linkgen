@@ -1,3 +1,4 @@
 - add autocompletion if protocol (http://) is missing in deeplink
-- add html5 url checking for deeplink input field (NOT really reliable, this
-is only intended as support)
+- make O2 the default program, no further selection required (or possible, as
+of now ;))
+
