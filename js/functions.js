@@ -1,88 +1,22 @@
 const LNBR = "\n";
 
-function get_cur_program() {
-    cur_program  = $('#program_selector').val().toUpperCase();
-    cur_program  = O2; // $('#program_selector').attr('value').toUpperCase();
-    return cur_program;
-}
-
-function get_cur_network() {
-    cur_network  = $('#network_selector').val().toUpperCase();
-    return cur_network;
-}
-
-function get_cur_prodgrp() {
-    cur_prodgrp  = $('#prodgrp_selector').val().toUpperCase();
-    return cur_prodgrp;
-}
-
-function get_is_postview() {
-    var is_postview = $('#postview_selector').is(':checked') == true ? POSTVIEW : DEFAULT;
-    return is_postview;
-}
-
-function get_deeplink() {
-    var deeplink = $('#link_input').val();
-    if(deeplink.substr(0, 7) != 'http://') {
-        deeplink = 'http://' + deeplink;
-    }
-    return deeplink;
-}
-
-function get_add_prodgrp() {
-    add_prodgrp = $('#prodgrp').css('display') == 'none' ? false : true;
-    return add_prodgrp;
-}
-
-
-
-function get_add_network() {
-    add_network = $('#network').css('display') == 'none' ? false : true;
-    return add_network;
-}
-
-
-function get_link_data() {
-
+function report_error() {
     var data = [];
+    data = get_link_data();
+//    console.log(data);
+//    data = JSON.stringify(get_link_data());
+//    console.log(data);
 
-    data['cur_program'] = get_cur_program();
-    data['cur_network'] = get_cur_network();
-    data['cur_prodgrp'] = get_cur_prodgrp();
-
-    data['is_postview'] = get_is_postview();
-    data['deeplink'] = get_deeplink();
-
-    data['add_prodgrp'] = get_add_prodgrp();
-    data['add_network'] = get_add_network();
-
-    data['program'] = JSON.parse(cur_program);
-    data['network'] = JSON.parse(cur_network);
-    data['prodgrp'] = JSON.parse(cur_prodgrp);
-
-    console.log(data['prodgrp']);
-
-    data['partner'] = DEFAULT;
-
-    return data;
+    $.ajax({
+        url: "lib/report.ajax.php",
+        type: "POST",
+        data: data,
+        dataType: "json",
+    }).done(function() {
+        console.log('Mail sent');
+    });
 }
 
-
-
-function get_link(data) {
-    var link = link_base;
-    link += encodeURIComponent(aa_links[data['program']][data['is_postview']]);
-    link += encodeURIComponent(encodeURIComponent(data['deeplink']));
-
-    if(add_network) {
-        link += encodeURIComponent(encodeURIComponent('?partnerId=' + partner_id[data['network']]));
-        link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[data['network']][data['is_postview']]));
-        link += encodeURIComponent(encodeURIComponent('&type=' + type[data['network']]));
-    }
-
-    link += pg_id[data['network']][data['prodgrp']];
-    return(link);
-}
 
 /*
  * function create_link
@@ -139,21 +73,6 @@ function get_log_text(data) {
     return log;
 }
 
-
-
-function report_error() {
-    var data = get_link_data();
-    var log = get_log_text(data);
-
-    $.ajax({
-        type: "POST",
-        url: "lib/report.ajax.php",
-        context: document.body,
-        data: data
-    }).done(function() {
-        console.log('Mail sent');
-    });
-}
 
 
 function show_next(src) {
@@ -282,6 +201,102 @@ function handle_file_select(event) {
     $('output').val(output);
 }
 
+
+
+
+function get_link(data) {
+    var link = link_base;
+    link += encodeURIComponent(aa_links[data['program']][data['is_postview']]);
+    link += encodeURIComponent(encodeURIComponent(data['deeplink']));
+
+    if(add_network) {
+        link += encodeURIComponent(encodeURIComponent('?partnerId=' + partner_id[data['network']]));
+        link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[data['network']][data['is_postview']]));
+        link += encodeURIComponent(encodeURIComponent('&type=' + type[data['network']]));
+    }
+
+    link += pg_id[data['network']][data['prodgrp']];
+    return(link);
+}
+
+
+
+
+function get_link_data() {
+
+    var data = [];
+
+    data['cur_program'] = get_cur_program();
+    data['cur_network'] = get_cur_network();
+    data['cur_prodgrp'] = get_cur_prodgrp();
+
+    data['is_postview'] = get_is_postview();
+    data['deeplink'] = get_deeplink();
+
+    data['add_prodgrp'] = get_add_prodgrp();
+    data['add_network'] = get_add_network();
+
+    data['program'] = JSON.parse(cur_program);
+    data['network'] = JSON.parse(cur_network);
+    data['prodgrp'] = JSON.parse(cur_prodgrp);
+
+    data['partner'] = DEFAULT;
+
+    return data;
+}
+
+
+
+function get_cur_program() {
+    cur_program  = $('#program_selector').val().toUpperCase();
+    cur_program  = O2; // $('#program_selector').attr('value').toUpperCase();
+    return cur_program;
+}
+
+
+
+function get_cur_network() {
+    cur_network  = $('#network_selector').val().toUpperCase();
+    return cur_network;
+}
+
+
+
+function get_cur_prodgrp() {
+    cur_prodgrp  = $('#prodgrp_selector').val().toUpperCase();
+    return cur_prodgrp;
+}
+
+
+
+function get_is_postview() {
+    var is_postview = $('#postview_selector').is(':checked') == true ? POSTVIEW : DEFAULT;
+    return is_postview;
+}
+
+
+
+function get_deeplink() {
+    var deeplink = $('#link_input').val();
+    if(deeplink.substr(0, 7) != 'http://') {
+        deeplink = 'http://' + deeplink;
+    }
+    return deeplink;
+}
+
+
+
+function get_add_prodgrp() {
+    add_prodgrp = $('#prodgrp').css('display') == 'none' ? false : true;
+    return add_prodgrp;
+}
+
+
+
+function get_add_network() {
+    add_network = $('#network').css('display') == 'none' ? false : true;
+    return add_network;
+}
 
 
 // we need to map an entire path ...
