@@ -1,5 +1,12 @@
 const LNBR = "\n";
 
+/**
+ *  Reports a given errornous link
+ *
+ *  currently NOT used
+ *
+ *  @return {boolean} true if mail could be sent, false otherwise
+ */
 function report_error() {
     var data = [];
     data = get_cfg_from_dom();
@@ -18,11 +25,14 @@ function report_error() {
 }
 
 
+
 /*
- * function create_link
+ * Creates the complete correctly encoded link
  *
- * create the complete correctly encoded link
+ * TODO: This is crap. create_link is calling a function called get_link?
+ *       Change this, if not by reworking then by renaming!!!!
  *
+ * @return {string} the generated link
  */
 function create_link() {
     "use strict";
@@ -46,6 +56,11 @@ function create_link() {
 
 
 
+/*
+ * Displays the link (text) in the HTML page
+ *
+ * @param link any string to be displayed in the output field
+ */
 function show_link(link) {
     $('#link_output').val(link);
     $('#output_link').show();
@@ -54,6 +69,13 @@ function show_link(link) {
 
 
 
+/**
+ * Create and return a complete log text for output (display and/or storage)
+ *
+ * @param {array} data The complete data used in creating the link
+ * @param {string} the log string
+ *
+ */
 function get_log_text(data) {
     var logM
     // prepare log
@@ -77,6 +99,15 @@ function get_log_text(data) {
 
 
 
+/**
+ * unhide next element in "link gen chain"
+ *
+ * depending on what element has just been selected
+ * (or "unselected", i.e. reset to "Select ...", mapped to DEFAULT or zero)
+ * different elements have to be shown and/or hidden
+ *
+ * @param {string} src the DOM element from which the call was triggered
+ */
 function show_next(src) {
     var cur, id, name, value;
 
@@ -112,11 +143,9 @@ function show_next(src) {
 }
 
 
+
 /*
- * function hide_all
- *
- * Hides all input elements except the program
- * selector
+ * Hide all input elements except the program selector
  * Currently, there are the following input elements:
  * - program  selector
  * - network  selector
@@ -128,7 +157,7 @@ function show_next(src) {
  * a previous input field is reset to it's default
  * value ('Select ...', currently).
  *
- * @param name  current "section" name ("product", "network", "prodgrp")
+ * @param {string} name current "section" name ("product", "network", "prodgrp")
  *
  */
 function hide_all(name) {
@@ -147,18 +176,30 @@ function hide_all(name) {
 
 
 
-function create_group_selector(name, data) {
+/**
+ * create complete <select><option />...</select> HTML structure
+ * based on a given array of values
+ *
+ * @param {string} domID the name of the element, will become the ID
+ * @param {array} data the data array containing ALL required information
+ */
+function create_group_selector(domID, data) {
     var selector;
-    selector = $('<select id="' + name  + '_selector"></select>');
+    selector = $('<select id="' + domID  + '_selector"></select>');
 
     for(var cid in data) {
         selector.append($('<option value="' + cid + '">' + data[cid] + '</option>'));
     }
-    $('#select_' + name).append(selector);
+    $('#select_' + domID).append(selector);
 }
 
 
 
+/**
+ * reset all form elements subsequent to a specified element to its initial status
+ *
+ * @param {string} name the name of the last element that should NOT be reset
+ */
 function reset_all(name) {
 //     $('#program_selector').children('[value=0]').attr('selected', '"selected"');
 
@@ -175,6 +216,15 @@ function reset_all(name) {
 
 
 
+/*
+ * handle a file input action
+ *
+ * read the file,
+ * parse the cfg string and
+ * create a link for every deeplink entry
+ *
+ * @param {event} event the event object required for handling the file request
+ */
 function handle_file_select(event) {
     var files = event.target.files; // FileList object
 
@@ -232,7 +282,10 @@ function handle_file_select(event) {
 
 
 
-
+/**
+ * create the entire link
+ *
+ */
 function get_link(data) {
     var link = link_base;
     link += encodeURIComponent(aa_links[data['program']][data['is_postview']]);
