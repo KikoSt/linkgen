@@ -2,9 +2,9 @@ const LNBR = "\n";
 
 function report_error() {
     var data = [];
-    data = get_link_data();
+    data = get_cfg_from_dom();
 //    console.log(data);
-//    data = JSON.stringify(get_link_data());
+//    data = JSON.stringify(get_cfg_from_dom());
 //    console.log(data);
 
     $.ajax({
@@ -27,7 +27,7 @@ function report_error() {
 function create_link() {
     "use strict";
 
-    var data = get_link_data();
+    var data = get_cfg_from_dom();
     var link = get_link(data);
 
     // add the link itself to data
@@ -37,6 +37,8 @@ function create_link() {
     var log = get_log_text(data);
 
     console.log(log);
+    console.log('----------');
+    console.log(link);
 
     // TODO: write log to log file!
     return(link);
@@ -97,7 +99,6 @@ function show_next(src) {
         }
     } else if (name == 'network') {
         if(value == ZANOX) {
-            console.log('ZANOX');
             $('#input_link').hide();
             $('#prodgrp').show();
         } else {
@@ -135,7 +136,6 @@ function hide_all(name) {
     $('#program').show();
 
     if(name == 'program') {
-        console.log('Hiding network');
         $('#network').hide();
     }
     if(name == 'program' || name == 'network') {
@@ -163,9 +163,6 @@ function reset_all(name) {
 //     $('#program_selector').children('[value=0]').attr('selected', '"selected"');
 
     if(name == 'program') {
-    }
-    console.log(name);
-    if(name == 'program') {
         $('#network_selector').children('[value=0]').attr('selected', '"selected"');
     }
     if(name == 'program' || name == 'network') {
@@ -181,13 +178,45 @@ function reset_all(name) {
 function handle_file_select(event) {
     var files = event.target.files; // FileList object
 
+    console.log('processing');
+
     var reader = new FileReader;
 
-    reader.onload = (function(the_file) {
-        return function(e) {
-            alert(e);
+    reader.onload = function(event) {
+        var fileListString = event.target.result;
+
+        if(fileListString == '') {
+            return false;
+        } else {
+            var fileListArray = fileListString.split('\n');
+            cfgstring = fileListArray.shift();
+            data = get_cfg_from_cfgstring(cfgstring);
+
+//            console.log(data);
+
+            var output = [];
+
+            for(var i=0; i<fileListArray.length; i+=1) {
+                if(fileListArray[i] != '') {
+//                    console.log(fileListArray[i]);
+                    var deeplink = fileListArray[i];
+                    deeplink = deeplink.replace(/(\r\n|\n|\r)/gm,"");
+                    console.log(deeplink);
+                    data['deeplink'] = deeplink;
+                    var curLink = get_link(data);
+                    output.push(curLink);
+//                    console.log(curLink);
+                }
+            }
+            outputString = output.join("\n\n");
+            outputStringHtml = output.join("\n<br />\n<br />\n");
+            console.log('-----------------------------------------------');
+            console.log(outputString);
+            console.log('-----------------------------------------------');
+            $('#list_output').html(outputStringHtml);
+            $('#list_output').show();
         }
-    });
+    };
 
     // files is a FileList of File objects!
     var output = [];
@@ -209,8 +238,15 @@ function get_link(data) {
     link += encodeURIComponent(aa_links[data['program']][data['is_postview']]);
     link += encodeURIComponent(encodeURIComponent(data['deeplink']));
 
-    if(add_network) {
-        link += encodeURIComponent(encodeURIComponent('?partnerId=' + partner_id[data['network']]));
+    console.log(data['deeplink']);
+
+    param_delimiter = '?';
+    if(data['deeplink'].indexOf('?') != -1) {
+        param_delimiter = '&';
+    }
+
+    if(data['add_network']) {
+        link += encodeURIComponent(encodeURIComponent(param_delimiter + 'partnerId=' + partner_id[data['network']]));
         link += encodeURIComponent(encodeURIComponent('&vo_nr=' + vo_nr[data['network']][data['is_postview']]));
         link += encodeURIComponent(encodeURIComponent('&type=' + type[data['network']]));
     }
@@ -222,7 +258,7 @@ function get_link(data) {
 
 
 
-function get_link_data() {
+function get_cfg_from_dom() {
 
     var data = [];
 
@@ -241,6 +277,56 @@ function get_link_data() {
     data['prodgrp'] = JSON.parse(cur_prodgrp);
 
     data['partner'] = DEFAULT;
+
+    return data;
+}
+
+
+
+function get_cfg_from_cfgstring(cfgstring) {
+
+    var data = [];
+
+    if(cfgstring.charAt(0) != '#') {
+        return false;
+    } else {
+        cfgstring = cfgstring.substr(1, cfgstring.length);
+    }
+
+    var cfg_array = cfgstring.split(':');
+    var index_base = 0;
+    if(cfg_array[0] != 'O2' && cfg_array[0] != 'ALICE' && cfg_array[0] != 'FREIKARTE') {
+        // check if first value is NETWORK
+        if(cfg_array[0] != 'AFFILINET' && cfg_array[0] != 'ZANOX' && cfg_array[0] != 'TRADEDOUBLER' && cfg_array[0] != 'TDPRIVATE') {
+            // ERROR!
+            // Cannot read configuration string
+        } else {
+            index_base = -1;
+        }
+    }
+
+    data['cur_program'] = 'O2'; //cfg_array[0];
+    data['cur_network'] = cfg_array[index_base + 1];
+    data['cur_prodgrp'] = cfg_array[index_base + 3];
+
+    data['is_postview'] = eval(cfg_array[index_base + 2]);
+
+    data['add_prodgrp'] = 1; // data['cur_network'] == 2 ? 1 : 0;
+    data['add_network'] = 1; //get_add_network();
+
+    data['program'] = eval(data['cur_program']);
+    data['network'] = eval(data['cur_network']);
+    data['prodgrp'] = eval(data['cur_prodgrp']);
+
+    if(data['network'] != ZANOX) {
+        data['prodgrp'] = DEFAULT;
+    }
+
+    //console.log(data['prodgrp']);
+
+    data['partner'] = DEFAULT;
+
+    //console.log(data);
 
     return data;
 }

@@ -55,7 +55,8 @@
 <body>
     <h1>explido linkGenerator</h1>
     <div id="warning">This tool requires activated JavaScript. Please make sure you have JavaScript activated before reload the page.</div>
-    <div id="manual">
+    <div class="main_block" id="manual">
+        <h2>manual</h2>
         <div id="program">
 <!--        Bitte Programm auswählen:
             <div id="select_program"></div> -->
@@ -80,33 +81,80 @@
             <button id="generate_link">Link erzeugen</button>
         </div>
         <div id="output_link">
-            <h2>Ergebnis:</h2>
+            <h3>Ergebnis:</h3>
             <textarea id="link_output"></textarea>
             <p>
             STRG-C zum Kopieren des Links in die Zwischenablage
             </p>
+            <!--
             <p>
             <button id="report_error">Fehlerhaften Link melden</button>
             </p>
+            -->
         </div>
     </div>
-            <!--
-    <div id="batch">
+    <div class="main_block" id="batch">
+        <h2>batch processing</h2>
         <div id="input_file">
             <input type="file" id="file_input" name="files[]" multiple />
             <output id="list"></output>
+            <button style="display:none">process</button>
+        </div>
+        <br />
+        <div id="list_output"></div>
+        <br />
+        <div id="legend">
+        <em>
+        legal values:
+        <br />
+        program: O2
+        <br />
+        network: AFFILINET | ZANOX | TRADEDOUBLER | TDPRIVATE
+        <br />
+        postview: DEFAULT | POSTVIEW (DEFAULT = NOT postview ;))
+        <br />
+        prodgrp: O | PREPAID | BLUE | GO | MYHANDY | DSL | SELF | STUDENT | START | TEXT_O | TEXT_PREPAID | TEXT_BLUE | TEXT_GO | TEXT_MYHANDY | TEXT_DSL | TEXT_SELF | TEXT_STUDENT | TEXT_START
+
+        <br /><br />
+        <strong>required structure, first line in file:</strong>
+        <br />
+        #[&lt;program>:]&lt;network>:&lt;postview>[:&lt;prodgrp>]
+        <br />
+        Note:
+        <br />
+        - &lt;program> is optional since currently, only O2 is supported and any other value will be overwritten. The parameter can be added though, providing better readability and perhaps compatibility with a later version supporting more programs
+        <br />
+        - &lt;progrp> is only required for the ZANOX network currently; it can - and should - be ommited for any other network and any value will be ignored with other networks
+        <br />
+        <br />
+        <br />
+        for example:
+        <br />
+        #ZANOX:POSTVIEW:BLUE
+        <br />
+        or
+        <br />
+        #O2:AFFILINET:DEFAULT
+        </em>
+
         </div>
     </div>
-            -->
-    <div id="changelog">
-
-        <h1>changelog<span class="annotation"> - click to show</span></h1>
+    <div class="main_block" id="changelog">
+        <h2>changelog<span class="annotation"> - click to show</span></h2>
         <div id="content">
-            <h2>2012-12-04</h2>
+            <h3>2012-12-06</h3>
             <ul>
-                <li class="new">change '&' to '?' with partnerId (IntelliAd parameter)</li>
-                <li class="new">remove POSTVIEW from network list</li>
-                <li class="new">reinstate inclusion of IntelliAd section ;)</li>
+                <li class="new">add basic implementation of <strong>batch processing</strong></li>
+            </ul>
+            <h3>2012-12-06</h3>
+            <ul>
+                <li>delimiter for partnerId (IntelliAd parameter) will now be selected dynamically depending on the existence of other parameters in the deeplink url</li>
+            </ul>
+            <h3>2012-12-04</h3>
+            <ul>
+                <li>change '&' to '?' with partnerId (IntelliAd parameter)</li>
+                <li>remove POSTVIEW from network list</li>
+                <li>reinstate inclusion of IntelliAd section ;)</li>
                 <li>add autocompletion if protocol (http://) is missing in deeplink</li>
                 <li>make O2 the default program, no further selection required (or possible, as of now ;))</li>
                 <li>minor style sheet corrections and changes</li>
